@@ -65,7 +65,11 @@ MVKE::Instance::Instance(std::string appName, unsigned major, unsigned minor, un
     )
   );
 
+#if (VK_HEADER_VERSION >= 99)
+  mDynamicLoader = std::make_shared<vk::DispatchLoaderDynamic>(*mVkInst, vkGetInstanceProcAddr);
+#else
   mDynamicLoader = std::make_shared<vk::DispatchLoaderDynamic>(*mVkInst);
+#endif
 
   if (sEnableValidation) {
     using MsgSeverity = vk::DebugUtilsMessageSeverityFlagBitsEXT;
