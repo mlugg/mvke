@@ -4,17 +4,21 @@
 CXXFLAGS := -std=c++17 -Wall -Werror -g
 LDFLAGS := -L../build -lmvke -lvulkan
 
-SOURCE := $(wildcard *.cpp)
-OBJECTS := $(patsubst %.cpp,%.o,$(SOURCE))
+BUILD_DIR := build
 
-all: test
+SOURCE := $(wildcard *.cpp)
+OBJECTS := $(patsubst %.cpp,$(BUILD_DIR)/%.o,$(SOURCE))
+HEADERS := $(wildcard *.hpp)
+
+all: $(BUILD_DIR)/test
 
 clean:
-	rm -f test
-	rm -f *.o
+	rm -rf $(BUILD_DIR)
 
-test: $(OBJECTS)
+$(BUILD_DIR)/test: $(OBJECTS)
+	@mkdir -p $(dir $@)
 	g++ -o $@ $^ $(LDFLAGS)
 
-%.o: %.cpp
-	g++ $(CXXFLAGS) -c $<
+$(BUILD_DIR)/%.o: %.cpp $(HEADERS)
+	@mkdir -p $(dir $@)
+	g++ $(CXXFLAGS) -c $< -o $@
