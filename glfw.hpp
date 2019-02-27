@@ -16,13 +16,14 @@ namespace MVKE {
     void update();
     void initSurface(vk::Instance &vkInst);
 
-    const vk::SurfaceKHR &surface() const;
+    vk::SurfaceKHR surface() const;
     const vk::Extent2D getSize() const;
 
     static void framebufferResizeCallback(GLFWwindow *window, int width, int height);
   private:
     GLFWwindow *mWindow;
-    vk::UniqueSurfaceKHR mSurface;
+    VkSurfaceKHR mSurface;
     bool &mResizeVal;
+    vk::Instance mInst;
   };
 }

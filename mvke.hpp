@@ -8,6 +8,8 @@
 #include "glfw.hpp"
 #include "geometry.hpp"
 
+#include "vk_mem_alloc_wrapper.hpp"
+
 #define MVKE_MAJOR 0
 #define MVKE_MINOR 1
 #define MVKE_PATCH 0
@@ -41,20 +43,22 @@ namespace MVKE {
     void mainLoop();
   private:
     vk::UniqueInstance mVkInst;
+
+    std::shared_ptr<vk::DispatchLoaderDynamic> mDynamicLoader;
     vk::UniqueHandle<vk::DebugUtilsMessengerEXT, vk::DispatchLoaderDynamic> mDbgMessenger;
-    MVKE::GLFW *mWindow;
     std::shared_ptr<MVKE::Device> mDevice;
+    std::shared_ptr<MVKE::GLFW> mWindow;
 
     struct {
       vk::Queue graphics;
       vk::Queue present;
     } mQueues;
 
+    VmaAllocator mAllocator;
+
     std::shared_ptr<MVKE::Swapchain> mSwapchain;
 
     std::shared_ptr<MVKE::Pipeline> mPipeline;
-
-    std::shared_ptr<vk::DispatchLoaderDynamic> mDynamicLoader;
 
     static const std::vector<const char *> sValidation;
 

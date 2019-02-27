@@ -19,17 +19,17 @@ MVKE::GLFW::GLFW(int width, int height, std::string title, bool &resizeVal) : mR
 }
 
 MVKE::GLFW::~GLFW() {
+  vkDestroySurfaceKHR(mInst, mSurface, nullptr);
   glfwDestroyWindow(mWindow);
   glfwTerminate();
 }
 
 void MVKE::GLFW::initSurface(vk::Instance &vkInst) {
-  VkSurfaceKHR surf;
-  if (glfwCreateWindowSurface(VkInstance(vkInst), mWindow, nullptr, &surf) != VK_SUCCESS) {
+  mInst = vkInst;
+  
+  if (glfwCreateWindowSurface(VkInstance(vkInst), mWindow, nullptr, &mSurface) != VK_SUCCESS) {
     throw std::runtime_error("Failed to create window surface!");
   }
-
-  mSurface = vk::UniqueSurfaceKHR(surf);
 }
 
 std::vector<const char *> MVKE::GLFW::getVkExtensions() const {
@@ -56,4 +56,4 @@ const vk::Extent2D MVKE::GLFW::getSize() const {
   return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
 }
 
-const vk::SurfaceKHR &MVKE::GLFW::surface() const { return *mSurface; }
+vk::SurfaceKHR MVKE::GLFW::surface() const { return vk::SurfaceKHR(mSurface); }

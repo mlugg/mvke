@@ -31,7 +31,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 }
 
 MVKE::Instance::Instance(std::string appName, unsigned major, unsigned minor, unsigned patch) {
-  mWindow = new MVKE::GLFW(800, 600, appName, mFramebufferResized);
+  mWindow = std::make_shared<MVKE::GLFW>(800, 600, appName, mFramebufferResized);
   std::vector<const char *> extensions;
   std::vector<const char *> layers;
 

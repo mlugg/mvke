@@ -11,6 +11,7 @@ namespace MVKE {
   class Device {
   public:
     Device(MVKE::Instance &inst);
+    ~Device();
     MVKE::QueueFamilies findFamilies() const;
     
     const vk::Device &device() const;

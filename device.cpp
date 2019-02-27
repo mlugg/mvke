@@ -7,6 +7,9 @@
 #include <set>
 #include <string>
 
+#define VMA_IMPLEMENTATION
+#include "vk_mem_alloc_wrapper.hpp"
+
 const std::vector<const char *> MVKE::Device::sExtensions = {
   VK_KHR_SWAPCHAIN_EXTENSION_NAME,
 };
@@ -14,6 +17,16 @@ const std::vector<const char *> MVKE::Device::sExtensions = {
 MVKE::Device::Device(MVKE::Instance &inst) : mInst(inst) {
   auto group = chooseDeviceGroup();
   createLogicalDevice(group);
+
+  VmaAllocatorCreateInfo allocatorInfo = {};
+  allocatorInfo.physicalDevice = mPhysDevice;
+  allocatorInfo.device = *mDevice;
+
+  vmaCreateAllocator(&allocatorInfo, &mInst.mAllocator);
+}
+
+MVKE::Device::~Device() {
+  vmaDestroyAllocator(mInst.mAllocator);
 }
 
 void MVKE::Device::createLogicalDevice(std::vector<vk::PhysicalDevice> group) {

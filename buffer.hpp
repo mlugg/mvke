@@ -25,21 +25,18 @@ namespace MVKE {
     virtual void unmap_buffer(void *data, uint64_t offset, uint64_t size) = 0;
 
   public:
-    Buffer(MVKE::Instance &inst, uint64_t size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags props);
-    virtual ~Buffer() = default;
+    Buffer(MVKE::Instance &inst, uint64_t size, vk::BufferUsageFlags usage, VmaMemoryUsage memUsage);
+    virtual ~Buffer();
     Accessor map(uint64_t offset, uint64_t size);
     const vk::Buffer &buffer() const;
-    const vk::DeviceMemory &memory() const;
+    const vk::DeviceMemory memory() const;
     uint64_t size() const;
 
   protected:
     MVKE::Instance &mInst;
-    uint64_t mSize;
-    vk::UniqueBuffer mBuffer;
-    vk::UniqueDeviceMemory mMemory;
-
-  private:
-    uint32_t findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties);
+    vk::Buffer mBuffer;
+    VmaAllocationInfo mInfo;
+    VmaAllocation mAllocation;
   };
 
   class HighPerformanceBuffer : public Buffer {
