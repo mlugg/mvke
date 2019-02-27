@@ -1,7 +1,7 @@
 .POSIX:
 .PHONY: all clean
 
-CXXFLAGS := -std=c++17 -Wall -Werror -g
+CXXFLAGS := -std=c++17 -Wall -Werror -g -O0
 LDFLAGS := -L../build -lmvke -lvulkan
 
 BUILD_DIR := build

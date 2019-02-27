@@ -3,7 +3,7 @@
 
 CXX := g++ -std=c++17
 
-CXXFLAGS := -fPIC -Wall -Werror -g
+CXXFLAGS := -fPIC -Wall -Werror -g -O0
 LDFLAGS := -shared -Wl,-soname,libmvke.so -lvulkan `pkg-config --static --libs glfw3`
 
 BUILD_DIR := build
